@@ -114,3 +114,8 @@ socket.on("user-disconnected", friendId => {
 
 // button handles 
 
+const cutCall = () =>{
+    const baseUrl = window.location.origin
+    console.log(baseUrl)
+    window.location = baseUrl + "/newlink"
+}

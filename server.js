@@ -13,7 +13,10 @@ app.use(express.static("public"))
 
 
 app.get("/", (req, res)=>{
-    res.redirect(`/${uuidv4()}`)
+    const freshRoomId = uuidv4()
+    // res.redirect(`/${uuidv4()}`)
+
+    res.render("index", {roomId: freshRoomId})
 })
 
 app.get("/:room", (req, res)=>{
