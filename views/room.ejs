@@ -22,10 +22,6 @@
             padding: 0;
         }
 
-        body {
-
-        }
-
         #video-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -84,12 +80,60 @@
             scale: 1;
             box-shadow: none;
         }
+
+        .controllers{
+            position: fixed;
+            z-index: 5;
+            bottom: 20px;
+
+            display: flex;
+            justify-content: center;
+            width: 100vw;
+            gap: 5%;
+        }
+
+        .controllers button{
+            background-color: #4f9a25;
+            border-radius: 50%;
+            padding: 20px;
+
+            width: 100px;
+            height: 100px;
+        }
+
+        #invite:hover{
+            background-color: #6eca3a;
+        }
+
+        #cut-call{
+            background-color: #b02828;
+        }
+
+        #cut-call:hover{
+            background-color: #d53e3e;
+        }
+
+        .controllers img{
+            width: 100%;
+            border-radius: 10%;
+            object-fit: contain;
+        }
+
     </style>
 </head>
 
 <body>
     <div id="video-grid">
         <video id="myVideo" class="main" autoplay muted playsinline></video>
+    </div>
+
+    <div class="controllers">
+        <button id="cut-call" onclick="">
+            <img src="/icons/camera.png" alt="" />
+        </button>
+        <button id="invite" onclick="">
+            <img id="invite" src="/icons/invite.png" alt="invite" />
+        </button>
     </div>
 </body>
 
