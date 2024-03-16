@@ -6,21 +6,29 @@ const connectedPeers = {}
 
 // handeling and adding video to the browser 
 const videoGrid = document.getElementById("video-grid")
-const myVideo = document.createElement("video")
-myVideo.setAttribute("id", "myVideo")
-myVideo.muted = true
-myVideo.autoplay = true
-myVideo.playsinline = true
 
-videoGrid.append(myVideo)
+const myVideo = document.getElementById("myVideo")
 getUserMedia({ video: true, audio: true }, stream => {
     myVideo.srcObject = stream
 })
 
-const friendVideo = document.createElement("video")
-friendVideo.setAttribute("id", "friendVideo")
-friendVideo.autoplay = true
-friendVideo.playsinLine = true
+
+
+function makeVideo(remoteStream, friendId) {
+
+    if (!connectedPeers[friendId]) {
+
+        const friendVideo = document.createElement("video")
+        friendVideo.autoplay = true
+        friendVideo.playsInline = true
+
+        friendVideo.srcObject = remoteStream
+        videoGrid.append(friendVideo)
+
+        connectedPeers[friendId] = friendVideo
+    }
+
+}
 
 
 peer.on("open", id => {
@@ -47,12 +55,14 @@ const makeStreamAndCall = friendId => {
         const call = peer.call(friendId, stream)
 
         call.on("stream", remoteStream => {
-            friendVideo.srcObject = remoteStream
-            videoGrid.append(friendVideo)
+            makeVideo(remoteStream, friendId)
         })
 
         call.on("close", () => {
-            friendVideo.remove()
+            if (connectedPeers[friendId]) {
+                connectedPeers[friendId].remove()
+                delete connectedPeers[friendId]
+            }
         })
 
     },
@@ -66,7 +76,9 @@ const makeStreamAndCall = friendId => {
 
 // answering a call 
 peer.on("call", call => {
-    console.log("answering a call")
+    const friendId = call.peer
+
+    console.log("answering call of id: ", friendId)
 
     getUserMedia({ video: true, audio: true }, stream => {
         myVideo.srcObject = stream
@@ -74,14 +86,16 @@ peer.on("call", call => {
         call.answer(stream)
 
         call.on("stream", remoteStream => {
-            friendVideo.srcObject = remoteStream
-            videoGrid.append(friendVideo)
+            makeVideo(remoteStream, friendId, call)
         })
 
         call.on("close", () => {
-            friendVideo.remove()
+            if (connectedPeers[friendId]) {
+                connectedPeers[friendId].remove()
+                delete connectedPeers[friendId]
+            }
         })
-        
+
     }), err => {
         console.log(err)
     }
@@ -89,7 +103,10 @@ peer.on("call", call => {
 
 
 // when friend disconnects 
-socket.on("user-disconnected", userId => {
-    console.log("user disconnected: ", userId)
-    friendVideo.remove()
+socket.on("user-disconnected", friendId => {
+    console.log("user disconnected: ", friendId)
+    if(connectedPeers[friendId]){
+        connectedPeers[friendId].remove()
+        delete connectedPeers[friendId]
+    }
 })
