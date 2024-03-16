@@ -7,16 +7,20 @@ const connectedPeers = {}
 // handeling and adding video to the browser 
 const videoGrid = document.getElementById("video-grid")
 const myVideo = document.createElement("video")
+myVideo.setAttribute("id", "myVideo")
 myVideo.muted = true
 myVideo.autoplay = true
+myVideo.playsinline = true
 
 videoGrid.append(myVideo)
-getUserMedia({video: true, audio: true}, stream=>{
+getUserMedia({ video: true, audio: true }, stream => {
     myVideo.srcObject = stream
 })
 
 const friendVideo = document.createElement("video")
+friendVideo.setAttribute("id", "friendVideo")
 friendVideo.autoplay = true
+friendVideo.playsinLine = true
 
 
 peer.on("open", id => {
@@ -47,7 +51,7 @@ const makeStreamAndCall = friendId => {
             videoGrid.append(friendVideo)
         })
 
-        call.on("close", ()=>{
+        call.on("close", () => {
             friendVideo.remove()
         })
 
@@ -72,17 +76,20 @@ peer.on("call", call => {
         call.on("stream", remoteStream => {
             friendVideo.srcObject = remoteStream
             videoGrid.append(friendVideo)
-        }),
+        })
 
-            call.on("close", () => {
-                friendVideo.remove()
-            })
-
-        err => {
-            console.log(err)
-        }
-    })
+        call.on("close", () => {
+            friendVideo.remove()
+        })
+        
+    }), err => {
+        console.log(err)
+    }
 })
 
 
-// when user disconnects 
+// when friend disconnects 
+socket.on("user-disconnected", userId => {
+    console.log("user disconnected: ", userId)
+    friendVideo.remove()
+})
