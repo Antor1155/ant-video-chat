@@ -9,6 +9,12 @@ const videoGrid = document.getElementById("video-grid")
 const myVideo = document.createElement("video")
 myVideo.muted = true
 myVideo.autoplay = true
+
+videoGrid.append(myVideo)
+getUserMedia({video: true, audio: true}, stream=>{
+    myVideo.srcObject = stream
+})
+
 const friendVideo = document.createElement("video")
 friendVideo.autoplay = true
 
@@ -30,7 +36,6 @@ const makeStreamAndCall = friendId => {
     getUserMedia({ video: true, audio: true }, stream => {
 
         myVideo.srcObject = stream
-        videoGrid.append(myVideo)
 
         console.log("making stream to call: ", stream)
 
@@ -61,7 +66,6 @@ peer.on("call", call => {
 
     getUserMedia({ video: true, audio: true }, stream => {
         myVideo.srcObject = stream
-        videoGrid.append(myVideo)
 
         call.answer(stream)
 
