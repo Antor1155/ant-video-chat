@@ -1,6 +1,6 @@
 const socket = io("/")
 const peer = new Peer()
-const getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+const getUserMedia = navigator.mediaDevices.getUserMedia
 
 const connectedPeers = {}
 
@@ -8,9 +8,10 @@ const connectedPeers = {}
 const videoGrid = document.getElementById("video-grid")
 
 const myVideo = document.getElementById("myVideo")
-getUserMedia({ video: true, audio: true }, stream => {
+getUserMedia({ video: true, audio: true }).then(stream => {
     myVideo.srcObject = stream
 })
+
 myVideo.addEventListener("click", () => {
     const mainVideo = document.querySelector(".main")
     mainVideo.classList.remove("main")
@@ -33,29 +34,25 @@ socket.on("user-connected", friendId => {
 
 const makeStreamAndCall = friendId => {
 
-    getUserMedia({ video: true, audio: true }, stream => {
+    getUserMedia({ video: true, audio: true })
+        .then(stream => {
 
-        myVideo.srcObject = stream
+            myVideo.srcObject = stream
 
-        console.log("making stream to call: ", stream)
+            console.log("making stream to call: ", stream)
 
-        // calling friend 
-        const call = peer.call(friendId, stream)
+            // calling friend 
+            const call = peer.call(friendId, stream)
 
-        call.on("stream", remoteStream => {
-            makeVideo(remoteStream, friendId)
-        })
+            call.on("stream", remoteStream => {
+                makeVideo(remoteStream, friendId)
+            })
 
-        call.on("close", () => {
-            handleDisconnect(friendId)
-        })
+            call.on("close", () => {
+                handleDisconnect(friendId)
+            })
 
-    },
-        err => {
-            console.log(err)
-        }
-
-    )
+        }).catch(error => console.log("error in making call : ", error))
 }
 
 
@@ -65,22 +62,22 @@ peer.on("call", call => {
 
     console.log("answering call of id: ", friendId)
 
-    getUserMedia({ video: true, audio: true }, stream => {
-        myVideo.srcObject = stream
+    getUserMedia({ video: true, audio: true })
+        .then(stream => {
+            myVideo.srcObject = stream
 
-        call.answer(stream)
+            call.answer(stream)
 
-        call.on("stream", remoteStream => {
-            makeVideo(remoteStream, friendId)
+            call.on("stream", remoteStream => {
+                makeVideo(remoteStream, friendId)
+            })
+
+            call.on("close", () => {
+                handleDisconnect(friendId)
+            })
+
         })
-
-        call.on("close", () => {
-            handleDisconnect(friendId)
-        })
-
-    }), err => {
-        console.log(err)
-    }
+        .catch(error => console.log("error in answering call : ", error))
 })
 
 function makeVideo(remoteStream, friendId) {
