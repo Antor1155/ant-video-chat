@@ -59,10 +59,7 @@ const makeStreamAndCall = friendId => {
         })
 
         call.on("close", () => {
-            if (connectedPeers[friendId]) {
-                connectedPeers[friendId].remove()
-                delete connectedPeers[friendId]
-            }
+            handleDisconnect(friendId)
         })
 
     },
@@ -90,10 +87,7 @@ peer.on("call", call => {
         })
 
         call.on("close", () => {
-            if (connectedPeers[friendId]) {
-                connectedPeers[friendId].remove()
-                delete connectedPeers[friendId]
-            }
+            handleDisconnect(friendId)
         })
 
     }), err => {
@@ -105,16 +99,25 @@ peer.on("call", call => {
 // when friend disconnects 
 socket.on("user-disconnected", friendId => {
     console.log("user disconnected: ", friendId)
-    if(connectedPeers[friendId]){
+    handleDisconnect(friendId)
+})
+
+
+const handleDisconnect = (friendId) => {
+    if (connectedPeers[friendId]) {
         connectedPeers[friendId].remove()
         delete connectedPeers[friendId]
     }
-})
+}
 
 
 // button handles 
 
-const cutCall = () =>{
+const cutCall = () => {
     const baseUrl = window.location.origin
     window.location = baseUrl
+}
+
+const invite = () => {
+
 }
