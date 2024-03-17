@@ -14,13 +14,13 @@ app.use(express.static("public"))
 
 app.get("/", (req, res)=>{
     const freshRoomId = uuidv4()
-    // res.redirect(`/${uuidv4()}`)
+    // res.redirect(`/${freshRoomId}`)
 
-    res.render("index", {roomId: freshRoomId})
+    res.render("index", {freshRoomId: freshRoomId})
 })
 
 app.get("/:room", (req, res)=>{
-    console.log("requested room with id :", req.params.room)
+    console.log("requested room with id :", req.params.room , typeof(req.params.room))  
     res.render("room", {roomId: req.params.room})
 })
 
