@@ -11,6 +11,11 @@ const myVideo = document.getElementById("myVideo")
 getUserMedia({ video: true, audio: true }, stream => {
     myVideo.srcObject = stream
 })
+myVideo.addEventListener("click", ()=>{
+    const mainVideo = document.querySelector(".main")
+    mainVideo.classList.remove("main")
+    myVideo.classList.add("main")
+})
 
 
 
@@ -26,6 +31,13 @@ function makeVideo(remoteStream, friendId) {
         videoGrid.append(friendVideo)
 
         connectedPeers[friendId] = friendVideo
+
+        friendVideo.addEventListener("click", ()=>{
+            const mainVideo = document.querySelector(".main")
+            mainVideo.classList.remove("main")
+
+            friendVideo.classList.add("main")
+        })
     }
 
 }
@@ -83,7 +95,7 @@ peer.on("call", call => {
         call.answer(stream)
 
         call.on("stream", remoteStream => {
-            makeVideo(remoteStream, friendId, call)
+            makeVideo(remoteStream, friendId)
         })
 
         call.on("close", () => {
