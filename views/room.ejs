@@ -7,6 +7,7 @@
 
     <script>
         const roomId = "<%=roomId %>"
+        console.log(roomId)
     </script>
 
     <script defer src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
@@ -59,12 +60,6 @@
         }
 
         video.main {
-            /* order: 1;
-            grid-column: 1 /span 5;
-            grid-row: 1 /span 4;
-            margin: 0;
-            width: 100%;
-            height: 100%; */
 
             z-index: 0;
             position: fixed;
@@ -74,14 +69,16 @@
             width: 100vw;
             border-radius: 0;
             box-shadow: none;
+
+            cursor:default;
         }
 
-        video.main:hover{
+        video.main:hover {
             scale: 1;
             box-shadow: none;
         }
 
-        .controllers{
+        .controllers {
             position: fixed;
             z-index: 5;
             bottom: 20px;
@@ -92,33 +89,116 @@
             gap: 5%;
         }
 
-        .controllers button{
+        .controllers button {
             background-color: #4f9a25;
             border-radius: 50%;
             padding: 20px;
 
-            width: 100px;
-            height: 100px;
+            width: 80px;
+            height: 80px;
+            cursor: pointer;
         }
 
-        #invite:hover{
+        #invite:hover {
             background-color: #6eca3a;
         }
 
-        #cut-call{
+        #cut-call {
             background-color: #b02828;
         }
 
-        #cut-call:hover{
+        #cut-call:hover {
             background-color: #d53e3e;
         }
 
-        .controllers img{
+        .controllers img {
             width: 100%;
             border-radius: 10%;
             object-fit: contain;
         }
 
+
+        /* invite people section starts form here  */
+        #create-room {
+
+            box-sizing: border-box;
+            width: 90%;
+            height: fit-content;
+            max-width: 600px;
+            border-radius: 10px;
+            background-color: #363739;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            display: none;
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            padding-top: 70px;
+            padding-bottom: 70px;
+
+            z-index: 10;
+        }
+
+        #create-room p {
+            font-size: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        #create-room .info {
+            display: flex;
+            gap: 1rem;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 18px;
+            color: antiquewhite;
+            margin-bottom: 1rem;
+        }
+
+        #note {
+            font-size: 1rem;
+            margin: 1rem;
+
+        }
+
+        .copy-btn {
+            text-decoration: underline;
+            padding: 5px;
+        }
+
+        #status {
+            font-size: 20px;
+            border: 1px solid black;
+            padding: 5px;
+            border-radius: 10px;
+            /* background-color: #56955d; */
+            visibility: hidden;
+        }
+
+
+        #cancel {
+            background-color: transparent;
+            border-radius: 50%;
+            height: 50px;
+            width: 50px;
+
+            position: absolute;
+            top: 5px;
+            right: 5px;
+        }
+
+        #cancel img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
     </style>
 </head>
 
@@ -135,6 +215,29 @@
             <img id="invite" src="/icons/invite.png" alt="invite" />
         </button>
     </div>
+
+    <div id="create-room">
+        <p>Copy the room ID <span style="color:yellow">OR</span> the link directly and share to invite</p>
+
+        <p id="note">Click on the underlined text to copy !</p>
+
+        <div class="info">
+            <p>Room ID: <button id="room-id" class="copy-btn"></button></p>
+        </div>
+
+        <div class="info">
+            <p>Room URL: <button id="room-link" class="copy-btn"></button></p>
+        </div>
+
+        <p id="status">&#129299; Copied</p>
+
+        <button id="cancel" onclick="hideCancel()">
+            <img src="/icons/cancel.png" alt="cancel btn">
+        </button>
+    </div>
+
 </body>
+
+
 
 </html>

@@ -95,6 +95,7 @@ p{
 .info p{
     font-size: 18px;
     color: antiquewhite;
+    margin-bottom: 1rem;
 }
 
 #note{
@@ -104,6 +105,7 @@ p{
 
 .copy-btn{
     text-decoration: underline;
+    padding: 5px;
 }
 
 #status{
@@ -119,6 +121,10 @@ p{
     background-color: #82d18b;
     padding: 10px 50px;
     border-radius: 10px;
+}
+
+#start-meeting:hover{
+    scale: 1.1;
 }
 
 #cancel{

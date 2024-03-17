@@ -11,7 +11,7 @@ const myVideo = document.getElementById("myVideo")
 getUserMedia({ video: true, audio: true }, stream => {
     myVideo.srcObject = stream
 })
-myVideo.addEventListener("click", ()=>{
+myVideo.addEventListener("click", () => {
     const mainVideo = document.querySelector(".main")
     mainVideo.classList.remove("main")
     myVideo.classList.add("main")
@@ -96,7 +96,7 @@ function makeVideo(remoteStream, friendId) {
 
         connectedPeers[friendId] = friendVideo
 
-        friendVideo.addEventListener("click", ()=>{
+        friendVideo.addEventListener("click", () => {
             const mainVideo = document.querySelector(".main")
             mainVideo.classList.remove("main")
 
@@ -104,7 +104,7 @@ function makeVideo(remoteStream, friendId) {
         })
 
         // if connectedPeers query is have only this video, then make this video as main video 
-        if(Object.keys(connectedPeers).length === 1){
+        if (Object.keys(connectedPeers).length === 1) {
             const mainVideo = document.querySelector(".main")
             mainVideo.classList.remove("main")
 
@@ -126,7 +126,7 @@ const handleDisconnect = (friendId) => {
     if (connectedPeers[friendId]) {
         const video = connectedPeers[friendId]
 
-        if(video.classList.contains("main")){
+        if (video.classList.contains("main")) {
             console.log("making my video as main video")
 
             myVideo.classList.add("main")
@@ -147,5 +147,24 @@ const cutCall = () => {
 }
 
 const invite = () => {
-
+    document.querySelector('#create-room').style.display = 'flex';
 }
+
+
+// this section is for invite section 
+const hideCancel = () => {
+    document.querySelector('#create-room').style.display = 'none';
+}
+
+document.getElementById("room-id").innerHTML = roomId
+document.getElementById("room-link").innerHTML = `${window.location.origin}/${roomId}`
+
+document.getElementById("room-id").addEventListener("click", () => {
+    navigator.clipboard.writeText(roomId)
+    document.getElementById("status").style.visibility = "visible"
+})
+
+document.getElementById("room-link").addEventListener("click", () => {
+    navigator.clipboard.writeText(`${window.location.origin}/${roomId}`)
+    document.getElementById("status").style.visibility = "visible"
+})

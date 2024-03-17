@@ -53,7 +53,7 @@
 
         <button id="start-meeting">Start Meeting</button>
 
-        <button id="cancel" onclick="hideCreateRoom()">
+        <button id="cancel" onclick="hideCancel()">
             <img src="/icons/cancel.png" alt="cancel btn">
         </button>
     </div>
@@ -95,16 +95,9 @@
 
     }
 
-    function generateRoomId() {
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let roomId = '';
-        for (let i = 0; i < 12; i++) {
-            roomId += characters.charAt(Math.floor(Math.random() * characters.length));
-        }
-        return roomId;
-    }
 
-    function hideCreateRoom(){
+
+    function hideCancel(){
         document.getElementById('create-room').style.display = "none"
     }
 
