@@ -19,30 +19,6 @@ myVideo.addEventListener("click", ()=>{
 
 
 
-function makeVideo(remoteStream, friendId) {
-
-    if (!connectedPeers[friendId]) {
-
-        const friendVideo = document.createElement("video")
-        friendVideo.autoplay = true
-        friendVideo.playsInline = true
-
-        friendVideo.srcObject = remoteStream
-        videoGrid.append(friendVideo)
-
-        connectedPeers[friendId] = friendVideo
-
-        friendVideo.addEventListener("click", ()=>{
-            const mainVideo = document.querySelector(".main")
-            mainVideo.classList.remove("main")
-
-            friendVideo.classList.add("main")
-        })
-    }
-
-}
-
-
 peer.on("open", id => {
     console.log("my peer id: ", id)
     socket.emit("join-room", roomId, id)
@@ -107,6 +83,37 @@ peer.on("call", call => {
     }
 })
 
+function makeVideo(remoteStream, friendId) {
+
+    if (!connectedPeers[friendId]) {
+
+        const friendVideo = document.createElement("video")
+        friendVideo.autoplay = true
+        friendVideo.playsInline = true
+
+        friendVideo.srcObject = remoteStream
+        videoGrid.append(friendVideo)
+
+        connectedPeers[friendId] = friendVideo
+
+        friendVideo.addEventListener("click", ()=>{
+            const mainVideo = document.querySelector(".main")
+            mainVideo.classList.remove("main")
+
+            friendVideo.classList.add("main")
+        })
+
+        // if connectedPeers query is have only this video, then make this video as main video 
+        if(Object.keys(connectedPeers).length === 1){
+            const mainVideo = document.querySelector(".main")
+            mainVideo.classList.remove("main")
+
+            friendVideo.classList.add("main")
+        }
+    }
+
+}
+
 
 // when friend disconnects 
 socket.on("user-disconnected", friendId => {
@@ -117,7 +124,16 @@ socket.on("user-disconnected", friendId => {
 
 const handleDisconnect = (friendId) => {
     if (connectedPeers[friendId]) {
-        connectedPeers[friendId].remove()
+        const video = connectedPeers[friendId]
+
+        if(video.classList.contains("main")){
+            console.log("making my video as main video")
+
+            myVideo.classList.add("main")
+        }
+
+        // removing the video 
+        video.remove()
         delete connectedPeers[friendId]
     }
 }
