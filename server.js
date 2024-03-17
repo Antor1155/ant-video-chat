@@ -20,7 +20,7 @@ app.get("/", (req, res)=>{
 })
 
 app.get("/:room", (req, res)=>{
-    console.log("requested room with id :", req.params.room , typeof(req.params.room))  
+    // console.log("requested room with id :", req.params.room , typeof(req.params.room))  
     res.render("room", {roomId: req.params.room})
 })
 
