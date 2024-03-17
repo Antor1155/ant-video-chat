@@ -79,7 +79,7 @@ button.form-btn:hover{
     align-items: center;
     /* justify-content: center; */
     padding: 10px;
-    padding-top: 5%;
+    padding-top: 50px;
 }
 
 p{
@@ -119,6 +119,23 @@ p{
     background-color: #82d18b;
     padding: 10px 50px;
     border-radius: 10px;
+}
+
+#cancel{
+    background-color: transparent;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+#cancel img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 

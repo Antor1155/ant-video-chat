@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="lobby.css">
+    <link rel="stylesheet" href="/lobby.css">
 
     <script>
         const roomId = "<%=freshRoomId %>"
@@ -53,6 +53,9 @@
 
         <button id="start-meeting">Start Meeting</button>
 
+        <button id="cancel" onclick="hideCreateRoom()">
+            <img src="/icons/cancel.png" alt="cancel btn">
+        </button>
     </div>
 
 </body>
@@ -92,8 +95,6 @@
 
     }
 
-
-
     function generateRoomId() {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         let roomId = '';
@@ -102,6 +103,11 @@
         }
         return roomId;
     }
+
+    function hideCreateRoom(){
+        document.getElementById('create-room').style.display = "none"
+    }
+
 </script>
 
 </html>
