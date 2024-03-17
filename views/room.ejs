@@ -5,15 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js" defer></script>
+    <script src="/socket.io/socket.io.js" defer></script>
+    <!-- <script src="script.js" defer></script> -->
+    <script src="newScript.js" defer></script>
+
     <script>
         const roomId = "<%=roomId %>"
         console.log(roomId)
     </script>
-
-    <script defer src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
-    <script src="/socket.io/socket.io.js" defer></script>
-    <!-- <script src="script.js" defer></script> -->
-    <script src="newScript.js" defer></script>
 
     <title>ant Video Chat</title>
 
@@ -70,7 +70,7 @@
             border-radius: 0;
             box-shadow: none;
 
-            cursor:default;
+            cursor: default;
         }
 
         video.main:hover {
@@ -82,11 +82,17 @@
             position: fixed;
             z-index: 5;
             bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: fit-content;
 
             display: flex;
             justify-content: center;
-            width: 100vw;
-            gap: 5%;
+            gap: 5vw;
+
+            border: 2px solid red;
+
+
         }
 
         .controllers button {
@@ -237,7 +243,5 @@
     </div>
 
 </body>
-
-
 
 </html>
